@@ -21,7 +21,7 @@ android {
             signingConfig getSigningConfig()
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
-                    output.outputFile = new File(output.outputFile.parent, output.outputFile.name.replace("app-development", "itl-android-" + defaultConfig.versionName))
+                    output.outputFile = new File(output.outputFile.parent, output.outputFile.name.replace("app-development", "android-news-" + defaultConfig.versionName))
                 }
             }
         }
@@ -44,6 +44,7 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'ch.acra:acra:4.6.2'
 }
