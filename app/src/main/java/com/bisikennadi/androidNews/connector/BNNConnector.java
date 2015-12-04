@@ -8,6 +8,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bisikennadi.androidNews.model.SessionData;
 import com.bisikennadi.androidNews.model.reponse.ErrorResponse;
+import com.bisikennadi.androidNews.model.reponse.LoginResponse;
+import com.bisikennadi.androidNews.model.request.LoginRequest;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -54,9 +56,35 @@ public class BNNConnector {
         HttpRequestQueue.getInstance(sessionData).addToQueue(request);
     }
 
-    public static void login() {}
+    public static void login(final LoginRequest request, final SessionData sessionData) {
+        final String url = null;
+        BNNConnector.post(url, request, sessionData, LoginResponse.class, new Response.Listener() {
+            @Override
+            public void onResponse(Object response) {
 
-    public static void authenticate() {}
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+    }
+
+    public static void authenticate(final SessionData sessionData) {
+        final String url = null;
+        BNNConnector.post(url, null, sessionData, LoginResponse.class, new Response.Listener() {
+            @Override
+            public void onResponse(Object response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                
+            }
+        });
+    }
 
     private static boolean isSessionTimeout(final VolleyError volleyError) {
         if(volleyError == null || volleyError.networkResponse == null || volleyError.networkResponse.data == null) return false;
@@ -71,9 +99,10 @@ public class BNNConnector {
 
     public static void handleSessionTimeout(final SessionData sessionData, final boolean notifyUser) {
         if(notifyUser) {
-            // TODO noify the user the their session has timed out
+            // TODO notify the user the their session has timed out
         }
         // TODO use the authenticate method to log them back in
+        authenticate(sessionData);
     }
 
     public static void logout(final SessionData sessionData) {
