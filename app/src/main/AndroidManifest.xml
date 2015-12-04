@@ -41,6 +41,14 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
+
+        <activity android:name="org.acra.CrashReportDialog"
+            android:theme="@style/Theme.Dialog"
+            android:process=":error_report"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true"
+            android:finishOnTaskLaunch="true" />
+
         <service
             android:name=".service.GpsService"
             android:enabled="true"
