@@ -81,7 +81,7 @@ public class BNNConnector {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                
+
             }
         });
     }

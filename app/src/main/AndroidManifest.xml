@@ -52,7 +52,8 @@
         <service
             android:name=".service.GpsService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"
+            android:icon="@drawable/ic_menu_mylocation"/>
     </application>
 
 </manifest>
