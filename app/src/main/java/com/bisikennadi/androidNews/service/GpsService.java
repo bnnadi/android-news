@@ -7,6 +7,8 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.os.IBinder;
 
+import java.util.logging.Handler;
+
 public class GpsService extends Service implements LocationListener {
     public GpsService() {
     }

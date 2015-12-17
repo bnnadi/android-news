@@ -1,6 +1,10 @@
 package com.bisikennadi.androidNews.activities;
 
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +16,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,9 +26,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
+import com.bisikennadi.androidNews.R;
 import com.bisikennadi.androidNews.constants.ActivityConstant;
+import com.bisikennadi.androidNews.service.GpsService;
 
 import java.io.File;
 
@@ -31,6 +39,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Bitmap bitmap;
     String selectedImagePath;
+    private ShareActionProvider mShareActionProvider;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +72,7 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            //logoutPrompt();
             super.onBackPressed();
         }
     }
@@ -71,6 +81,8 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(com.bisikennadi.androidNews.R.menu.main, menu);
+        MenuItem item = menu.findItem(R.id.nav_share);
+        mShareActionProvider = (ShareActionProvider) item.getActionProvider();
         return true;
     }
 
@@ -108,7 +120,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == com.bisikennadi.androidNews.R.id.nav_manage) {
 
         } else if (id == com.bisikennadi.androidNews.R.id.nav_share) {
-
+            setShareIntent(getIntent());
         } else if (id == com.bisikennadi.androidNews.R.id.nav_send) {
 
         }
@@ -190,5 +202,53 @@ public class MainActivity extends AppCompatActivity
 
             }
         }
+    }
+
+    private void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
+    }
+
+    private void logoutPrompt() {
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Exiting...")
+                .setMessage("Are you sure you want to exit this app.")
+                .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        MainActivity.this.logout();
+                    }
+
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).show();
+    }
+
+    private void logout() {
+        NotificationManager notManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notManager.cancelAll();
+        stopService(new Intent(this, GpsService.class));
+
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        editor.remove("userId")
+                .remove("password")
+                .remove("driverId")
+                .remove("truckId")
+                .remove("server")
+                .remove("sessionId")
+                .apply();
+
+//        Intent intent = new Intent(this, M.class);
+//        intent.putExtra("logout", "true");
+//        this.startActivity(intent);
+//        this.finish();
     }
 }

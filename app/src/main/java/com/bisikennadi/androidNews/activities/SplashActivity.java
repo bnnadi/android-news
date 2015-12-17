@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.bisikennadi.androidNews.R;
+import com.bisikennadi.androidNews.service.GpsService;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -16,12 +17,14 @@ public class SplashActivity extends AppCompatActivity {
         new CountDownTimer(9000,1000) {
 
             @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
+            public void onTick(long millisUntilFinished) {}
 
             @Override
             public void onFinish() {
+
+                Intent gpsIntent = new Intent(getApplicationContext(), GpsService.class);
+                startService(gpsIntent);
+
                 Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();

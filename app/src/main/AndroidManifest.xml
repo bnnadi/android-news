@@ -41,7 +41,7 @@
                 <data
                     android:host="bisikennadi.com"
                     android:pathPrefix="/news"
-                    android:scheme="http" />
+                    android:scheme="https" />
             </intent-filter>
         </activity>
 

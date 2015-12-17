@@ -47,6 +47,24 @@ public class BNNConnector {
      *
      * @param url               URL
      * @param data              request data
+     * @param sessionData       {@link SessionData} the user's session
+     * @param responseType      {@link Class} the expected response type
+     * @param responseListener  {@link com.android.volley.Response.Listener} success response listener
+     * @param errorListener     {@link com.android.volley.Response.ErrorListener} error response listener
+     */
+    private static void get(final String url, final Object data, final SessionData sessionData, final Class responseType,
+                             final Response.Listener responseListener, final Response.ErrorListener errorListener) {
+        GsonRequest request = new GsonRequest(Request.Method.GET,url, responseType,new Gson().toJson(data),responseListener,errorListener);
+        request.setRetryPolicy(new DefaultRetryPolicy(5000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        HttpRequestQueue.getInstance(sessionData).addToQueue(request);
+    }
+
+    /**
+     *
+     * Performs HTTP POST
+     *
+     * @param url               URL
+     * @param data              request data
      * @param responseListener  {@link Response.Listener} success response listener
      * @param errorListener     {@link Response.ErrorListener} error response listener
      */
